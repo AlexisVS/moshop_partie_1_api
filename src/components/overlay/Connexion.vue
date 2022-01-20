@@ -95,7 +95,7 @@ export default {
             .post('http://127.0.0.1:8000/api/login', form)
             .then(res => {
               if (res.status == 200) {
-                window.axios.defaults.headers.Authorization = res.data.token;
+                window.axios.defaults.headers.Authorization = 'Bearer ' + res.data.token;
                 localStorage.setItem('bearerToken', res.data.token)
                 this.$emit('loginSuccess', false)
               }
