@@ -4,7 +4,7 @@
       <Navigation />
     </v-navigation-drawer>
 
-    <v-app-bar app>
+    <v-app-bar app :dense="$vuetify.breakpoint.xlOnly">
       <!-- if the user is connected load navbar icon for display the menu -->
       <v-app-bar-nav-icon v-if="profile" @click="drawer = !drawer"></v-app-bar-nav-icon>
 

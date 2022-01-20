@@ -163,7 +163,6 @@ export default {
   border-color: #1976d2;
   border-bottom: 1.5px solid #1976d2;
   color: #1976d2;
-
   transition: all ease-out 450ms;
 }
 </style>
