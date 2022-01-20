@@ -1,32 +1,127 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer temporary v-model="drawer" app>
+      <Navigation />
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <!-- if the user is connected load navbar icon for display the menu -->
+      <v-app-bar-nav-icon v-if="profile" @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Molengeek Shop Partie 1</v-toolbar-title>
+      <v-row>
+        <v-spacer></v-spacer>
+        <v-col cols="12" class="d-flex justify-end align-center">
+          <v-switch class="mr-6" hide-details @click="$vuetify.theme.dark = !$vuetify.theme.dark"></v-switch>
+          <div v-if="!isConnected && !profile">
+            <v-btn
+              elevation="0"
+              small
+              color="primary"
+              rounded
+              class="mx-3"
+              @click="loginOverlay = !loginOverlay"
+            >Connexion</v-btn>
+            <v-btn
+              elevation="5"
+              class="black--text"
+              color="white"
+              small
+              rounded
+              @click="registerOverlay = !registerOverlay"
+            >inscription</v-btn>
+          </div>
+          <div v-else>
+            <Profile
+              @isConnected="isConnected = true"
+              :profile="profile"
+              @openEditProfileOverlay="editProfileOverlay = true"
+              @logoutSuccess="profile = null; isConnected = false"
+            />
+          </div>
+        </v-col>
+      </v-row>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <Inscription
+              :registerOverlay="registerOverlay"
+              @registerSuccess="registerOverlay = false; loadProfile(); loadingProfile = true;"
+              @closeOverlayInscription="registerOverlay = false"
+            />
+            <Connexion
+              :loginOverlay="loginOverlay"
+              @loginSuccess="loginOverlay = false; loadProfile(); loadingProfile = true;"
+              @closeOverlayConnexion="loginOverlay = false"
+            />
+            <EditProfile
+              v-if="profile"
+              :editProfileOverlay="editProfileOverlay"
+              :profile="profile"
+              @editProfileSuccess="editProfileOverlay = false; loadProfile(); loadingProfile = true"
+              @closeOverlayEditProfile="editProfileOverlay = false"
+            />
+            <router-view
+              :key="$route.fullPath"
+              v-if="isConnected == true || $route.fullPath == '/'"
+            ></router-view>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+import Navigation from './components/layout/Navigation.vue'
+import Inscription from './components/overlay/Inscription.vue';
+import axios from 'axios'
+import Connexion from './components/overlay/Connexion.vue';
+import Profile from './components/Profile.vue';
+import EditProfile from './components/overlay/EditProfile.vue'
+export default {
+  name: 'App',
+  data: () => ({
+    drawer: false,
+    data: null,
+    loginOverlay: false,
+    registerOverlay: false,
+    editProfileOverlay: false,
+    isConnected: false,
+    profile: null,
+    loadingProfile: false,
+  }),
+  components: {
+    Navigation,
+    Inscription,
+    Connexion,
+    Profile,
+    EditProfile
+  },
+  methods: {
+    loadProfile () {
+      axios.get('http://127.0.0.1:8000/api/profile').then(res => {
+        if (res.status == 200) {
+          this.profile = res.data.data
+          this.isConnected = true
+          localStorage.setItem('isLoggedIn', true)
+        }
+      });
+    },
+  },
+  mounted () {
+    // this.data = window.data;
+  },
+  created () {
+    if ((this.isConnected == false || this.profile == null) && this.loadingProfile == true) {
+      this.loadProfile()
     }
-  }
+  },
 }
+</script>
+
+<style>
 </style>

@@ -33,16 +33,14 @@
 <script>
 import axios from "axios"
 export default {
+  name: "Shop",
   data: () => ({
     shop: null,
     shopLoaded: false,
   }),
   mounted () {
-    axios.get('http://127.0.0.1:8000/api/home')
+    axios.get('http://127.0.0.1:8000/api/shops/' + this.$route.params.id)
       .then(res => { this.shop = res.data; this.shopLoaded = true })
   }
 }
 </script>
-
-<style>
-</style>
