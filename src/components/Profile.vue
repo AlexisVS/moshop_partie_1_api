@@ -41,12 +41,13 @@ export default {
   },
   data: () => ({}),
   methods: {
-    logout () {
-      axios.post("http://127.0.0.1:8000/api/logout")
+    async logout () {
+      await axios.post("http://127.0.0.1:8000/api/logout")
         .then(res => console.log(res))
         .catch(err => console.log(err));
-        this.$router.push('/')
-        this.$emit('logoutSuccess', false)
+      this.$emit('logoutSuccess', false)
+      this.$router.push('/')
+      localStorage.removeItem('bearerToken')
     },
   }
 

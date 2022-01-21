@@ -66,8 +66,8 @@
             />
             <router-view
               :key="$route.fullPath"
-              v-if="isConnected == true || $route.fullPath == '/'"
             ></router-view>
+              <!-- v-if="isConnected == true || $route.fullPath == '/'" -->
           </v-col>
         </v-row>
       </v-container>
@@ -107,7 +107,7 @@ export default {
         if (res.status == 200) {
           this.profile = res.data.data
           this.isConnected = true
-          localStorage.setItem('isLoggedIn', true)
+          // localStorage.setItem('isLoggedIn', true)
         }
       });
     },
@@ -116,8 +116,9 @@ export default {
     // this.data = window.data;
   },
   created () {
-    this.loadingProfile = localStorage.getItem('isLoggedIn')
-    if (this.loadingProfile == true) {
+    if (localStorage.getItem('bearerToken') != null) {
+      window.axios.defaults.headers.Authorization = 'Bearer ' + localStorage.getItem('bearerToken')
+      // window.axios.defaults.headers.Authorization = 'Bearer ' + localStorage.getItem('bearerToken')
       this.loadProfile()
     }
   },

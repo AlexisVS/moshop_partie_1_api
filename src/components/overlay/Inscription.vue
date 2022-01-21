@@ -126,7 +126,7 @@ export default {
         .then(res => {
           console.log(res);
           window.axios.defaults.headers.Authorization = res.data.token_type + ' ' + res.data.access_token;
-          localStorage.setItem('bearerToken', res.data.token_type + ' ' + res.data.access_token)
+          localStorage.setItem('bearerToken', res.data.access_token)
           res.status == 200 && this.$emit('registerSuccess', false);
         });
       this.$refs.form.validate();

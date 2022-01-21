@@ -90,14 +90,18 @@ export default {
 
 
       axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie')
-        .then(() => {
+        .then((res) => {
+          console.log(res);
           axios
             .post('http://127.0.0.1:8000/api/login', form)
             .then(res => {
               console.log(res);
               if (res.status == 200) {
                 window.axios.defaults.headers.Authorization = 'Bearer ' + res.data.token;
-                localStorage.setItem('bearerToken', res.data.token)
+                window.axios.defaults.headers.common.Authorization = 'Bearer ' + res.data.token;
+                localStorage.removeItem('bearerToken')
+                localStorage.setItem('bearerToken', res.data.data.token)
+                localStorage.setItem('isLoggedIn', true)
                 this.$emit('loginSuccess', false)
               }
             })
