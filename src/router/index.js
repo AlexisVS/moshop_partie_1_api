@@ -42,9 +42,11 @@ const router = new VueRouter({
 
 
 // router.beforeEach((to, from, next) => {
-//   to.path !== '/' && localStorage.getItem('isLoggedIn') == true
+//   let isLoggedIn;
+//   isLoggedIn = localStorage.getItem('isLoggedIn')
+//   to.path !== '/' && isLoggedIn == true
 //   ? next()
-//   : false
+//   : next(false)
 // })
 
 export default router

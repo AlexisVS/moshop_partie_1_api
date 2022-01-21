@@ -45,6 +45,7 @@ export default {
       axios.post("http://127.0.0.1:8000/api/logout")
         .then(res => console.log(res))
         .catch(err => console.log(err));
+        this.$router.push('/')
         this.$emit('logoutSuccess', false)
     },
   }

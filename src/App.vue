@@ -36,7 +36,7 @@
               @isConnected="isConnected = true"
               :profile="profile"
               @openEditProfileOverlay="editProfileOverlay = true"
-              @logoutSuccess="profile = null; isConnected = false"
+              @logoutSuccess="profile = null; isConnected = false; isLoggedIn = false"
             />
           </div>
         </v-col>
@@ -116,7 +116,8 @@ export default {
     // this.data = window.data;
   },
   created () {
-    if ((this.isConnected == false || this.profile == null) && this.loadingProfile == true) {
+    this.loadingProfile = localStorage.getItem('isLoggedIn')
+    if (this.loadingProfile == true) {
       this.loadProfile()
     }
   },

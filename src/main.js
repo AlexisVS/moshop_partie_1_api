@@ -11,11 +11,6 @@ window.axios.defaults.withCredentials = true;
 axios.defaults.withCredentials = true;
 Vue.config.productionTip = false
 
-/* -------------------------------------------------------------------------- */
-/*                                    Auth                                    */
-localStorage.setItem('isLoggedIn', false);
-/* -------------------------------------------------------------------------- */
-
 new Vue({
   router,
   store,
