@@ -67,7 +67,7 @@
                             <v-row>
                               <v-card-actions class="mx-0 px-0">
                                 <v-btn
-                                  :to="'http://127.0.0.1:8000/api/articles/' + article.id"
+                                  :to="'/articles/' + article.id"
                                   class="ml-2"
                                 >View</v-btn>
                                 <v-spacer></v-spacer>
